@@ -11,6 +11,12 @@ const mongoose = require("mongoose");
 
 const app = express();
 
+//Load Passport Module
+require('./config/passport')(passport);
+
+//Load Routes
+const auth = require('./routes/auth');
+
 // MLAB CONFIG
 var uri = process.env.DBLOGIN;
 
@@ -58,7 +64,7 @@ app.get("/", (req, res) => {
 
 //FLASH MESSAGING
 app.use(flash());
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.locals.user = req.user;
   res.locals.error = req.flash("error");
   res.locals.success_msg = req.flash("success_msg");
@@ -66,12 +72,14 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use('/auth', auth);
+
 //=====================================================================
 
-// app.listen(process.env.PORT, process.env.IP || 5000, () => {
-//   console.log("The Vidjot Server Has Started Port 5000!");
-// });
-
-app.listen(5000 || process.env.PORT, process.env.IP, () => {
+app.listen(process.env.PORT, process.env.IP || 5000, () => {
   console.log("The Vidjot Server Has Started Port 5000!");
 });
+
+// app.listen(5000 || process.env.PORT, process.env.IP, () => {
+//   console.log("The StoryBook Server Has Started Port 5000!");
+// });
