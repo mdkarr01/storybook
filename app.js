@@ -4,28 +4,32 @@ const path = require("path");
 const exphbs = require("express-handlebars");
 const methodOverride = require("method-override");
 const flash = require("connect-flash");
-const session = require("express-session");
+// const session = require("express-session");
 const bodyParser = require("body-parser");
+var cookieParser = require("cookie-parser");
 const passport = require("passport");
 const mongoose = require("mongoose");
 
 const app = express();
 
+//Load User
+require("./models/User");
+
 //Load Passport Module
-require('./config/passport')(passport);
+require("./config/passport")(passport);
 
-//Load Routes
-const auth = require('./routes/auth');
-
+//Load auth Routes
+const indexRoutes = require("./routes/index");
+const authRoutes = require("./routes/auth");
 // MLAB CONFIG
 var uri = process.env.DBLOGIN;
-
-mongoose.Promise = global.Promise;
 
 mongoose
   .connect(uri)
   .then(() => console.log("Db Connected"))
   .catch(err => console.log(err));
+
+mongoose.Promise = global.Promise;
 
 //HANDLEBARS MIDDLEWARE
 app.engine(
@@ -50,21 +54,23 @@ app.use(
 );
 app.use(bodyParser.json());
 
+app.use(cookieParser());
+
 app.use(
   require("express-session")({
     secret: "Nellie is a baby girl",
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: false
   })
 );
 
-app.get("/", (req, res) => {
-  res.send("Ho");
-});
+//Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 //FLASH MESSAGING
 app.use(flash());
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   res.locals.user = req.user;
   res.locals.error = req.flash("error");
   res.locals.success_msg = req.flash("success_msg");
@@ -72,14 +78,15 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use('/auth', auth);
+app.use("/", indexRoutes);
+app.use("/auth", authRoutes);
 
 //=====================================================================
 
-app.listen(process.env.PORT, process.env.IP || 5000, () => {
-  console.log("The StoryBook Server Has Started Port 5000!");
-});
-
-// app.listen(5000 || process.env.PORT, process.env.IP, () => {
+// app.listen(process.env.PORT, process.env.IP || 5000, () => {
 //   console.log("The StoryBook Server Has Started Port 5000!");
 // });
+
+app.listen(5000 || process.env.PORT, process.env.IP, () => {
+  console.log("The StoryBook Server Has Started Port 5000!");
+});
