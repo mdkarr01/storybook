@@ -13,7 +13,7 @@ const mongoose = require("mongoose");
 const app = express();
 
 //Load User
-require("./models/user");
+require("./models/User");
 
 //Load Passport Module
 require("./config/passport")(passport);
