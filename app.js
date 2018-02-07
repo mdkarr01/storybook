@@ -21,6 +21,7 @@ require("./config/passport")(passport);
 //Load auth Routes
 const indexRoutes = require("./routes/index");
 const authRoutes = require("./routes/auth");
+const storiesRoutes = require("./routes/stories");
 // MLAB CONFIG
 var uri = process.env.DBLOGIN;
 
@@ -70,7 +71,7 @@ app.use(passport.session());
 
 //FLASH MESSAGING
 app.use(flash());
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.locals.user = req.user;
   res.locals.error = req.flash("error");
   res.locals.success_msg = req.flash("success_msg");
@@ -80,13 +81,14 @@ app.use(function(req, res, next) {
 
 app.use("/", indexRoutes);
 app.use("/auth", authRoutes);
+app.use("/stories", storiesRoutes);
 
 //=====================================================================
 
-app.listen(process.env.PORT, process.env.IP || 5000, () => {
-  console.log("The StoryBook Server Has Started Port 5000!");
-});
-
-// app.listen(5000 || process.env.PORT, process.env.IP, () => {
+// app.listen(process.env.PORT, process.env.IP || 5000, () => {
 //   console.log("The StoryBook Server Has Started Port 5000!");
 // });
+
+app.listen(5000 || process.env.PORT, process.env.IP, () => {
+  console.log("The StoryBook Server Has Started Port 5000!");
+});
