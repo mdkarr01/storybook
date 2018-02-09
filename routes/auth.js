@@ -1,6 +1,6 @@
 const express = require("express");
-const router = express.Router();
 const passport = require("passport");
+const router = express.Router();
 
 router.get(
   "/google",
@@ -16,6 +16,7 @@ router.get(
   }),
   (req, res) => {
     // Successful authentication, redirect to the dashboard.
+    req.flash("success_msg", "You are now logged in.");
     res.redirect("/dashboard");
   }
 );

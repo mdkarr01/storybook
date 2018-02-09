@@ -21,6 +21,7 @@ require("./config/passport")(passport);
 const indexRoutes = require("./routes/index");
 const authRoutes = require("./routes/auth");
 const storiesRoutes = require("./routes/stories");
+
 // MLAB CONFIG
 var uri = process.env.DBLOGIN;
 
