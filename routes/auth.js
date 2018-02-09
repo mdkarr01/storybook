@@ -31,6 +31,7 @@ router.get("/verify", (req, res) => {
 router.get("/logout", (req, res) => {
   req.logout();
   res.redirect("/");
+  req.flash("success_msg", "You are now logged out.");
 });
 
 module.exports = router;
