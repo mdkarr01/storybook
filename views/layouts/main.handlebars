@@ -26,9 +26,15 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.8.0/standard/ckeditor.js"></script>
     <script>
         $(document).ready(() => {
-            $('.button-collapse').sideNav();
+            $(".button-collapse").sideNav();
+            $("select").material_select();
+        });
+
+        CKEDITOR.replace("body", {
+            plugins: "wysiwygarea,toolbar,basicstyles,link"
         });
     </script>
 </body>

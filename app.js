@@ -5,14 +5,16 @@ const exphbs = require("express-handlebars");
 const methodOverride = require("method-override");
 const flash = require("connect-flash");
 const bodyParser = require("body-parser");
-var cookieParser = require("cookie-parser");
+const expressSanitizer = require("express-sanitizer");
+const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const mongoose = require("mongoose");
 
 const app = express();
 
 //Load User
-require("./models/user");
+require("./models/User");
+require("./models/Story");
 
 //Load Passport Module
 require("./config/passport")(passport);
@@ -54,6 +56,8 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+
+app.use(expressSanitizer()); // this line follows bodyParser() instantiations
 
 app.use(cookieParser());
 
