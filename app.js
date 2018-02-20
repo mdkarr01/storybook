@@ -34,10 +34,20 @@ mongoose
 
 mongoose.Promise = global.Promise;
 
+//HANDLEBARS HELPERS
+const {
+  truncate,
+  stripTags
+} = require('./helpers/hbs');
+
 //HANDLEBARS MIDDLEWARE
 app.engine(
   "handlebars",
   exphbs({
+    helpers: {
+      truncate: truncate,
+      stripTags: stripTags
+    },
     defaultLayout: "main"
   })
 );
@@ -75,7 +85,7 @@ app.use(passport.session());
 
 //FLASH MESSAGING
 app.use(flash());
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.locals.user = req.user;
   res.locals.error = req.flash("error");
   res.locals.success_msg = req.flash("success_msg");
