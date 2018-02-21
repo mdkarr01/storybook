@@ -19,7 +19,8 @@ router.get("/", ensureAuthenticated, (req, res) => {
     .populate('user')
     .then(stories => {
       res.render("stories/index", {
-        stories: stories
+        stories: stories,
+        layout: "home"
       });
     });
 });
@@ -60,8 +61,41 @@ router.get("/show/:id", (req, res) => {
     .then(stories => {
       res.render("stories/show", {
         stories: stories,
+        layout: "home"
       });
     });
+});
+
+//Edit story
+router.get("/edit/:id", (req, res) => {
+  Story.findOne({
+      _id: req.params.id
+    })
+    .populate('user')
+    .then(stories => {
+      res.render("stories/edit", {
+        stories: stories,
+      });
+    });
+});
+
+//Process the edit route
+router.put("/:id", ensureAuthenticated, (req, res) => {
+  Idea.findOne({
+    _id: req.params.id
+  }).then(story => {
+    // new values
+    title = req.body.title,
+      body = req.body.body,
+      status = req.body.status,
+      allowComments = allowComments,
+      user = req.user.id
+
+    idea.save().then(story => {
+      req.flash("success_msg", "Story has been updated");
+      res.redirect(`/stories/${req.params.id}`);
+    });
+  });
 });
 
 module.exports = router;

@@ -9,7 +9,6 @@ const expressSanitizer = require("express-sanitizer");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const mongoose = require("mongoose");
-const moment = require('moment');
 
 const app = express();
 
@@ -38,7 +37,9 @@ mongoose.Promise = global.Promise;
 //HANDLEBARS HELPERS
 const {
   truncate,
-  stripTags
+  stripTags,
+  formatDate,
+  formatDashboardDate
 } = require('./helpers/hbs');
 
 //HANDLEBARS MIDDLEWARE
@@ -47,9 +48,12 @@ app.engine(
   exphbs({
     helpers: {
       truncate: truncate,
-      stripTags: stripTags
+      stripTags: stripTags,
+      formatDate: formatDate,
+      formatDashboardDate: formatDashboardDate
     },
-    defaultLayout: "main"
+    defaultLayout: "main",
+    secondaryLayout: "home"
   })
 );
 app.set("view engine", "handlebars");

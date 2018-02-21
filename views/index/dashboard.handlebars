@@ -1,24 +1,35 @@
 <h2>Welcome, {{user.firstName}}</h2>
 <h4>Your Stories</h4>
 
-{{# each stories}}
+{{#if stories}}
 <h3>{{stories.title}}</h3>
 
-<div class="row">
-    <div class="col s12 m6">
-        <div class="card">
-            <div class="card-image">
-                // TODO Add the correct path
-                <img src="../public/images/sample-1.jpg">
-                <p>Date Added: {{stories.date}}</p>
-                <a class="btn-floating halfway-fab waves-effect waves-light red">
-                    <i class="material-icons"></i>
-                </a>
-            </div>
-            <div class="card-content">
-                <p>{{stories.body}}</p>
-            </div>
-        </div>
-    </div>
-</div>
-{{/each}}
+<table class="striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each stories}}
+        <tr>
+            <td>
+                <a href="/stories/show/{{id}}">{{title}}</a>
+            </td>
+            <td>{{formatDashboardDate date 'MMMM Do, YYYY'}}</td>
+            <td>{{status}}</td>
+            <td></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+<p>
+    <em>
+        <b>{{user.firstName}} has not created any stories.</b>
+    </em>
+</p>
+{{/if}}

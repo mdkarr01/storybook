@@ -1,6 +1,8 @@
+const moment = require('moment');
+
 module.exports = {
-  truncate: function(str, len){
-    if (str.length > len && str.length > 0) {
+	truncate: function (str, len) {
+		if (str.length > len && str.length > 0) {
 			var new_str = str + " ";
 			new_str = str.substr(0, len);
 			new_str = str.substr(0, new_str.lastIndexOf(" "));
@@ -8,8 +10,15 @@ module.exports = {
 			return new_str + '...';
 		}
 		return str;
-  },
-  stripTags: function(input){
-    return input.replace(/<(?:.|\n)*?>/gm, '');
-  }
+	},
+	stripTags: function (input) {
+		return input.replace(/<(?:.|\n)*?>/gm, '');
+	},
+	formatDate: function (date) {
+		// return moment(date).format(format);
+		return moment(date).fromNow();
+	},
+	formatDashboardDate: function (date, format) {
+		return moment(date).format(format);
+	}
 }

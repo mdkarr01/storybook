@@ -36,7 +36,12 @@
         CKEDITOR.replace("body", {
             plugins: "wysiwygarea,toolbar,basicstyles,link"
         });
+
+        $(document).ready(function () {
+            $('.tooltipped').tooltip({ delay: 50 });
+        });
     </script>
+
 </body>
 
 </html>
