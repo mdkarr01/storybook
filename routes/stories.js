@@ -54,12 +54,14 @@ router.post("/", (req, res) => {
 // Show One Story
 router.get("/show/:id", (req, res) => {
   Story.findOne({
-    id: req.params.id
-  }).then(stories => {
-    res.render("stories/show", {
-      stories: stories
+      _id: req.params.id
+    })
+    .populate('user')
+    .then(stories => {
+      res.render("stories/show", {
+        stories: stories,
+      });
     });
-  });
 });
 
 module.exports = router;
