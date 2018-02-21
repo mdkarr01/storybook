@@ -1,5 +1,5 @@
-<h2>Welcome, {{user.firstName}}</h2>
-<h4>Your Stories</h4>
+<h3>Welcome, {{user.firstName}}</h3>
+<h5>Your Posts</h5>
 
 {{#if stories}}
 <h3>{{stories.title}}</h3>
@@ -20,8 +20,17 @@
                 <a href="/stories/show/{{id}}">{{title}}</a>
             </td>
             <td>{{formatDashboardDate date 'MMMM Do, YYYY'}}</td>
-            <td>{{status}}</td>
-            <td></td>
+            <td>
+                <span class="dash-status">{{status}}</span>
+            </td>
+            <td>
+                <a class="btn btn-small left-align" href="/stories/edit/{{id}}">
+                    <i class="fa fa-pencil"></i> Edit</a>
+                <form action="/stories/{{id}}?_method=DELETE" method="POST" id="display-form">
+                    <button type="submit" class="btn btn-small red">
+                        <i class="fa fa-remove"></i> Delete</button>
+                </form>
+            </td>
         </tr>
         {{/each}}
     </tbody>

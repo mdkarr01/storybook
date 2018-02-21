@@ -31,3 +31,15 @@ footer {
 .chip {
     margin-top: 1em;
 }
+
+.dash-status {
+    text-transform: capitalize;
+}
+
+.btn-small {
+    border-radius: 10px;
+}
+
+#display-form {
+    display: inline;
+}

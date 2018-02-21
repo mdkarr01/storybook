@@ -48,7 +48,7 @@ router.post("/", (req, res) => {
   };
 
   new Story(newStory).save().then(story => {
-    res.redirect(`/stories/show/${story.id}`);
+    res.redirect('/stories');
   });
 });
 
@@ -81,7 +81,7 @@ router.get("/edit/:id", (req, res) => {
 
 //Process the edit route
 router.put("/:id", ensureAuthenticated, (req, res) => {
-  Idea.findOne({
+  Story.findOne({
     _id: req.params.id
   }).then(story => {
     // new values
@@ -91,11 +91,20 @@ router.put("/:id", ensureAuthenticated, (req, res) => {
       allowComments = allowComments,
       user = req.user.id
 
-    idea.save().then(story => {
+    story.save().then(story => {
       req.flash("success_msg", "Story has been updated");
       res.redirect(`/stories/${req.params.id}`);
     });
   });
 });
 
+// Delete story
+router.delete("/:id", ensureAuthenticated, (req, res) => {
+  Story.remove({
+    _id: req.params.id
+  }).then(() => {
+    req.flash("success_msg", "Story removed");
+    res.redirect("./index/dashboard");
+  });
+});
 module.exports = router;
