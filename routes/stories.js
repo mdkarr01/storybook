@@ -104,7 +104,7 @@ router.delete("/:id", ensureAuthenticated, (req, res) => {
     _id: req.params.id
   }).then(() => {
     req.flash("success_msg", "Story removed");
-    res.redirect("./index/dashboard");
+    res.redirect("/dashboard");
   });
 });
 module.exports = router;
