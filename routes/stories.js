@@ -82,16 +82,23 @@ router.put("/:id", ensureAuthenticated, (req, res) => {
   Story.findOne({
     _id: req.params.id
   }).then(story => {
+    req.body.title = req.sanitize(req.body.title);
+    req.body.body = req.sanitize(req.body.body);
+    let allowComments;
+    if (req.body.allowComments) {
+      allowComments = true;
+    } else {
+      allowComments = false;
+    }
     // new values
-    title = req.body.title,
-      body = req.body.body,
-      status = req.body.status,
-      allowComments = allowComments,
-      user = req.user.id
+    story.title = req.body.title,
+      story.body = req.body.body,
+      story.status = req.body.status,
+      story.allowComments = allowComments
 
     story.save().then(story => {
       req.flash("success_msg", "Story has been updated");
-      res.redirect(`/stories/${req.params.id}`);
+      res.redirect('/dashboard');
     });
   });
 });
