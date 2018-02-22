@@ -57,6 +57,7 @@ router.get("/show/:id", (req, res) => {
       _id: req.params.id
     })
     .populate('user')
+    .populate('comments.commentUser')
     .then(story => {
       res.render("stories/show", {
         story: story
@@ -113,21 +114,24 @@ router.delete("/:id", ensureAuthenticated, (req, res) => {
   });
 });
 
-router.post('comments/:id', (req, res) => {
-  Story.findById()
+//Add comment
+
+router.post('/comment/:id', (req, res) => {
+  Story.findOne({
+      _id: req.params.id
+    })
     .then(story => {
       const newComment = {
         commentBody: req.body.commentBody,
         commentUser: req.user.id
       }
 
-      //Add to commemnts array
+      // Add to comments array
       story.comments.unshift(newComment);
 
       story.save()
         .then(story => {
-          res.redirect("/stories/show/" + req.params.id);
-          console.log(newComment);
+          res.redirect(`/stories/show/${story.id}`);
         });
     });
 });

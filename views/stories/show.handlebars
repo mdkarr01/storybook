@@ -9,12 +9,18 @@
                 <p>{{{story.body}}}</p>
             </div>
         </div>
-        {{#if story.allowComments}}
+        {{#if story.allowComments}} {{#each story.comments}}
+        <div class="card">
+            <div class="card-content">
+                <h5>{{commentBody}}</h5>
+            </div>
+        </div>
+        {{/each}}
         <div class="card">
             <div class="card-content">
                 <span class="card-title">Comments</span>
                 {{#if user}}
-                <form action="/stories/comments/{{id}}" method="POST">
+                <form action="/stories/comment/{{story.id}}" method="POST">
                     <div class="input-field">
                         <textarea name="commentBody" class="materialize-textarea"></textarea>
                         <label for="commentBody">Add Comment</label>
