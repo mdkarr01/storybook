@@ -57,9 +57,9 @@ router.get("/show/:id", (req, res) => {
       _id: req.params.id
     })
     .populate('user')
-    .then(stories => {
+    .then(story => {
       res.render("stories/show", {
-        stories: stories
+        story: story
       });
     });
 });
