@@ -112,4 +112,24 @@ router.delete("/:id", ensureAuthenticated, (req, res) => {
     res.redirect("/dashboard");
   });
 });
+
+router.post('comments/:id', (req, res) => {
+  Story.findById()
+    .then(story => {
+      const newComment = {
+        commentBody: req.body.commentBody,
+        commentUser: req.user.id
+      }
+
+      //Add to commemnts array
+      story.comments.unshift(newComment);
+
+      story.save()
+        .then(story => {
+          res.redirect("/stories/show/" + req.params.id);
+          console.log(newComment);
+        });
+    });
+});
+
 module.exports = router;
