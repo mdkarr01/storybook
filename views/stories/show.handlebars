@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col s12 m8">
         <h3>{{story.title}}</h3>
-        <div class="card story">
+        <div class="card-story">
             <div class="card-content">
                 <span class="card-title">
                     <em>{{formatDate story.date}}</em>
@@ -9,22 +9,26 @@
                 <p>{{{story.body}}}</p>
             </div>
         </div>
-        {{#if story.allowComments}} {{#each story.comments}}
+        {{#if story.allowComments}}
+        <p>
+            <b>Comments</b>
+        </p>
+        {{#each story.comments}}
         <div class="card">
             <div class="card-content">
-                <h5>{{commentBody}}</h5>
+                <p>{{commentBody}}</p>
             </div>
             <div class="chip">
                 <img src="{{commentUser.image}}" alt="Author"> {{commentUser.firstName}} {{commentUser.lastName}}
             </div>
             <small>
-                <em>{{formatDate commentDate}}</em>
+                <em>Posted: {{formatDate commentDate 'MMMM Do, YYYY'}}</em>
             </small>
         </div>
         {{/each}}
         <div class="card">
             <div class="card-content">
-                <span class="card-title">Comments</span>
+                <span class="card-title">Add Your Comment</span>
                 {{#if user}}
                 <form action="/stories/comment/{{story.id}}" method="POST">
                     <div class="input-field">
