@@ -19,8 +19,7 @@ router.get("/", ensureAuthenticated, (req, res) => {
     .populate('user')
     .then(stories => {
       res.render("stories/index", {
-        stories: stories,
-        layout: "home"
+        stories: stories
       });
     });
 });
