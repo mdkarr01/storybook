@@ -59,8 +59,7 @@ router.get("/show/:id", (req, res) => {
     .populate('user')
     .then(stories => {
       res.render("stories/show", {
-        stories: stories,
-        layout: "home"
+        stories: stories
       });
     });
 });
