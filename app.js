@@ -39,7 +39,8 @@ const {
   truncate,
   stripTags,
   formatDate,
-  formatDashboardDate
+  formatDashboardDate,
+  select
 } = require('./helpers/hbs');
 
 //HANDLEBARS MIDDLEWARE
@@ -50,7 +51,8 @@ app.engine(
       truncate: truncate,
       stripTags: stripTags,
       formatDate: formatDate,
-      formatDashboardDate: formatDashboardDate
+      formatDashboardDate: formatDashboardDate,
+      select: select
     },
     defaultLayout: "main",
     secondaryLayout: "home"
