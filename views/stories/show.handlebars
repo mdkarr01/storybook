@@ -13,8 +13,15 @@
         <div class="card">
             <div class="card-content">
                 <span class="card-title">Comments</span>
-                {{#if user}} vv {{/else}}
-                <p>Please login to leave a comment.</p>
+                {{#if user}}
+                <form action="/stories/comments/{{id}}" method="POST">
+                    <div class="input-field">
+                        <textarea name="comment" id="" cols="30" rows="10"></textarea>
+                    </div>
+                </form>
+                {{/else}}
+                <p>Please
+                    <a href="/auth/google">log in</a> to leave a comment.</p>
                 {{/if}}
             </div>
         </div>
