@@ -1,22 +1,19 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
-const {
-  ensureAuthenticated,
-  ensureGuest
-} = require("../helpers/auth");
+const { ensureAuthenticated, ensureGuest } = require("../helpers/auth");
 const Story = mongoose.model("stories");
 const User = mongoose.model("users");
 
 // Story Index Page
 router.get("/", ensureAuthenticated, (req, res) => {
   Story.find({
-      status: 'public'
-    })
+    status: "public"
+  })
     .sort({
       date: "desc"
     })
-    .populate('user')
+    .populate("user")
     .then(stories => {
       res.render("stories/index", {
         stories: stories
@@ -47,17 +44,17 @@ router.post("/", (req, res) => {
   };
 
   new Story(newStory).save().then(story => {
-    res.redirect('/stories');
+    res.redirect("/stories");
   });
 });
 
 // Show One Story
 router.get("/show/:id", (req, res) => {
   Story.findOne({
-      _id: req.params.id
-    })
-    .populate('user')
-    .populate('comments.commentUser')
+    _id: req.params.id
+  })
+    .populate("user")
+    .populate("comments.commentUser")
     .then(story => {
       res.render("stories/show", {
         story: story
@@ -68,18 +65,19 @@ router.get("/show/:id", (req, res) => {
 //Edit story
 router.get("/edit/:id", ensureAuthenticated, (req, res) => {
   Story.findOne({
-      _id: req.params.id
-    })
-    .populate('user')
-    .then(story => {
-      if (story.user != req.user.id) {
-        res.redirect('/stories');
-      } else {
-        res.render("stories/edit", {
-          story: story
-        });
-      }
-    });
+    _id: req.params.id
+  }).then(story => {
+    if (story.user != req.user.id) {
+      console.log("req.user.id");
+      console.log("story.id");
+      req.flash("error_msg", "You are not authorized to edit this post.");
+      res.redirect("/dashboard");
+    } else {
+      res.render("stories/edit", {
+        story: story
+      });
+    }
+  });
 });
 
 //Process the edit route
@@ -96,14 +94,14 @@ router.put("/:id", ensureAuthenticated, (req, res) => {
       allowComments = false;
     }
     // new values
-    story.title = req.body.title,
-      story.body = req.body.body,
-      story.status = req.body.status,
-      story.allowComments = allowComments
+    (story.title = req.body.title),
+      (story.body = req.body.body),
+      (story.status = req.body.status),
+      (story.allowComments = allowComments);
 
     story.save().then(story => {
       req.flash("success_msg", "Story has been updated");
-      res.redirect('/dashboard');
+      res.redirect("/dashboard");
     });
   });
 });
@@ -120,24 +118,22 @@ router.delete("/:id", ensureAuthenticated, (req, res) => {
 
 //Add comment
 
-router.post('/comment/:id', (req, res) => {
+router.post("/comment/:id", (req, res) => {
   Story.findOne({
-      _id: req.params.id
-    })
-    .then(story => {
-      const newComment = {
-        commentBody: req.body.commentBody,
-        commentUser: req.user.id
-      }
+    _id: req.params.id
+  }).then(story => {
+    const newComment = {
+      commentBody: req.body.commentBody,
+      commentUser: req.user.id
+    };
 
-      // Add to comments array
-      story.comments.unshift(newComment);
+    // Add to comments array
+    story.comments.unshift(newComment);
 
-      story.save()
-        .then(story => {
-          res.redirect(`/stories/show/${story.id}`);
-        });
+    story.save().then(story => {
+      res.redirect(`/stories/show/${story.id}`);
     });
+  });
 });
 
 module.exports = router;
