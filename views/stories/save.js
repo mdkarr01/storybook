@@ -1,5 +1,4 @@
-< em > {
-    {
-        formatDate stories.date 'MMMM Do, YYYY - h:mm:ss a'
-    }
-} < /em>
+class = "tooltipped"
+data - delay = "50"
+data - tooltip = "Edit this story"
+data - position = "top"
