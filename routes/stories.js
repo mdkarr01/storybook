@@ -47,6 +47,20 @@ router.post("/", (req, res) => {
     user: req.user.id
   };
 
+  //Just get stories from a single user
+  router.get('/user:userId', (req, res) => {
+    Story.find({
+        user: req.params.userId status: "public"
+      })
+      .populate('user')
+      .then(stories => {
+        res.render("stories", {
+          stories: stories
+        });
+      });
+  });
+
+  //Form to add a new story
   new Story(newStory).save().then(story => {
     res.redirect("/stories");
   });
