@@ -27,7 +27,7 @@ module.exports = {
 	editIcon: function (storyUser, loggedUser, storyId, floating = true) {
 		if (storyUser == loggedUser) {
 			if (floating) {
-				return `<a href="/stories/edit/${storyId}" class="tooltipped btn-floating halfway-fab red"><i class="fa fa-pencil" data-delay="50" data-tooltip="Edit this story"></i></a>`
+				return `<a href="/stories/edit/${storyId}" class="tooltipped btn-floating halfway-fab red" data-delay="50" data-tooltip="Edit this story" data-position="top"><i class="fa fa-pencil"></i></a>`
 			} else {
 				return `<a href="/stories/edit/${storyId}"><i class="fa fa-pencil"></i></a>`
 			}
