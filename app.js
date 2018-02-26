@@ -40,7 +40,8 @@ const {
   stripTags,
   formatDate,
   formatDashboardDate,
-  select
+  select,
+  editIcon
 } = require("./helpers/hbs");
 
 //HANDLEBARS MIDDLEWARE
@@ -52,7 +53,8 @@ app.engine(
       stripTags: stripTags,
       formatDate: formatDate,
       formatDashboardDate: formatDashboardDate,
-      select: select
+      select: select,
+      editIcon: editIcon
     },
     defaultLayout: "main",
     secondaryLayout: "home"
@@ -92,7 +94,7 @@ app.use(passport.session());
 
 //FLASH MESSAGING
 app.use(flash());
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.locals.user = req.user;
   res.locals.error = req.flash("error");
   res.locals.success_msg = req.flash("success_msg");
