@@ -1,18 +1,22 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
-const { ensureAuthenticated, ensureGuest } = require("../helpers/auth");
+const {
+  ensureAuthenticated,
+  ensureGuest
+} = require("../helpers/auth");
 const Story = mongoose.model("stories");
 const User = mongoose.model("users");
 
 // Story Index Page
 router.get("/", ensureAuthenticated, (req, res) => {
   Story.find({
-    status: "public"
-  })
+      status: "public"
+    })
     .sort({
       date: "desc"
     })
+    .limit(3)
     .populate("user")
     .then(stories => {
       res.render("stories/index", {
@@ -51,8 +55,8 @@ router.post("/", (req, res) => {
 // Show One Story
 router.get("/show/:id", (req, res) => {
   Story.findOne({
-    _id: req.params.id
-  })
+      _id: req.params.id
+    })
     .populate("user")
     .populate("comments.commentUser")
     .then(story => {
@@ -95,9 +99,9 @@ router.put("/:id", ensureAuthenticated, (req, res) => {
     }
     // new values
     (story.title = req.body.title),
-      (story.body = req.body.body),
-      (story.status = req.body.status),
-      (story.allowComments = allowComments);
+    (story.body = req.body.body),
+    (story.status = req.body.status),
+    (story.allowComments = allowComments);
 
     story.save().then(story => {
       req.flash("success_msg", "Story has been updated");

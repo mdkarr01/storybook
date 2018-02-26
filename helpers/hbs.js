@@ -29,7 +29,7 @@ module.exports = {
 			if (floating) {
 				return `<a href="/stories/edit/${storyId}" class="tooltipped btn-floating halfway-fab red" data-delay="50" data-tooltip="Edit this story" data-position="top"><i class="fa fa-pencil"></i></a>`
 			} else {
-				return `<a href="/stories/edit/${storyId}"><i class="fa fa-pencil"></i></a>`
+				return `<a href="/stories/edit/${storyId} class="tooltipped" data-delay="50" data-tooltip="Edit this story" data-position="top"><i class="fa fa-pencil"></i></a>`
 			}
 		} else {
 			return '';
