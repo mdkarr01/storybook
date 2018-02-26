@@ -9,17 +9,16 @@ const Story = mongoose.model("stories");
 const User = mongoose.model("users");
 
 // Story Index Page
-router.get("/", ensureAuthenticated, (req, res) => {
+router.get('/', (req, res) => {
   Story.find({
-      status: "public"
+      status: 'public'
     })
+    .populate('user')
     .sort({
-      date: "desc"
+      date: 'desc'
     })
-    .limit(3)
-    .populate("user")
     .then(stories => {
-      res.render("stories/index", {
+      res.render('stories/index', {
         stories: stories
       });
     });
@@ -51,28 +50,30 @@ router.post("/", (req, res) => {
   router.get('/user/:userId', (req, res) => {
     Story.find({
         user: req.params.userId,
-        status: "public"
+        status: 'public'
       })
       .populate('user')
       .then(stories => {
-        res.render("stories/index", {
+        res.render('stories/index', {
           stories: stories
         });
       });
+    console.log(user);
   });
 
-  // router.get('/user/:userId', (req, res) => {
-  //   Story.find({
-  //       user: req.params.userId,
-  //       status: 'public'
-  //     })
-  //     .populate('user')
-  //     .then(stories => {
-  //       res.render('stories/index', {
-  //         stories: stories
-  //       });
-  //     });
-  // });
+  // Logged in users stories
+  router.get('/my', ensureAuthenticated, (req, res) => {
+    Story.find({
+        user: req.user.id
+      })
+      .populate('user')
+      .then(stories => {
+        res.render('stories/index', {
+          stories: stories
+        });
+        console.log(user);
+      });
+  });
 
   //Form to add a new story
   new Story(newStory).save().then(story => {

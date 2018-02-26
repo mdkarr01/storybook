@@ -21,7 +21,10 @@
                 <p>{{commentBody}}</p>
             </div>
             <div class="chip">
-                <img src="{{commentUser.image}}" alt="Author"> {{commentUser.firstName}} {{commentUser.lastName}}
+                <img src="{{commentUser.image}}" alt="Author">
+                <a href="/stories/user/{{commentUser.id}}">
+                    {{commentUser.firstName}} {{commentUser.lastName}}
+                </a>
             </div>
             <small>
                 <em>Posted: {{formatDate commentDate 'MMMM Do, YYYY'}}</em>
@@ -54,7 +57,7 @@
                 <img src="{{story.user.image}}" alt="Author" class="responsive-img circle">
             </div>
             <div class="card-action">
-                <a class="center-align" href="/stories/user/{{user.id}}">More from {{story.user.firstName}}</a>
+                <a href="/stories/user/{{story.user.id}}">More From {{story.user.firstName}}</a>
             </div>
         </div>
     </div>
