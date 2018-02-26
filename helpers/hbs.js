@@ -32,7 +32,7 @@ module.exports = {
 				return `<a href="/stories/edit/${storyId}"><i class="fa fa-pencil"></i></a>`
 			}
 		} else {
-
+			return '';
 		}
 	}
 }
