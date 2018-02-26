@@ -101,7 +101,7 @@ router.put("/:id", ensureAuthenticated, (req, res) => {
 
     story.save().then(story => {
       req.flash("success_msg", "Story has been updated");
-      res.redirect("/dashboard");
+      res.redirect(`/stories/show/${story.id}`);
     });
   });
 });
