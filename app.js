@@ -1,101 +1,117 @@
-const express = require('express');
-const path = require('path');
-const exphbs = require('express-handlebars');
-const bodyParser = require('body-parser');
-const methodOverride = require('method-override');
-const mongoose = require('mongoose');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const passport = require('passport');
+require("dotenv").config();
+const express = require("express");
+const path = require("path");
+const exphbs = require("express-handlebars");
+const methodOverride = require("method-override");
+const flash = require("connect-flash");
+const bodyParser = require("body-parser");
+const expressSanitizer = require("express-sanitizer");
+const cookieParser = require("cookie-parser");
+const Story = require("./models/Story");
+const User = require("./models/User");
+const passport = require("passport");
+const mongoose = require("mongoose");
+const LocalStrategy = require("passport-local");
 
-// Load Models
-require('./models/User');
-require('./models/Story');
+const app = express();
 
-// Passport Config
-require('./config/passport')(passport);
+//Load Passport Module
+// require("./config/passport")(passport);
 
 // Load Routes
-const index = require('./routes/index');
-const auth = require('./routes/auth');
-const stories = require('./routes/stories');
+const index = require("./routes/index");
+const auth = require("./routes/auth");
+const stories = require("./routes/stories");
 
-// Load Keys
-const keys = require('./config/keys');
+// MLAB CONFIG
+var uri = process.env.DBLOGIN;
 
-// Handlebars Helpers
+mongoose
+  .connect(uri)
+  .then(() => console.log("Db Connected"))
+  .catch(err => console.log(err));
+
+mongoose.Promise = global.Promise;
+
+//HANDLEBARS HELPERS
 const {
   truncate,
   stripTags,
   formatDate,
-  select,
-  editIcon
-} = require('./helpers/hbs');
+  formatDashboardDate,
+  select
+} = require("./helpers/hbs");
 
-// Map global promises
-mongoose.Promise = global.Promise;
-// Mongoose Connect
-mongoose.connect(keys.mongoURI, {
-    useMongoClient: true
+//HANDLEBARS MIDDLEWARE
+app.engine(
+  "handlebars",
+  exphbs({
+    helpers: {
+      truncate: truncate,
+      stripTags: stripTags,
+      formatDate: formatDate,
+      formatDashboardDate: formatDashboardDate,
+      select: select
+    },
+    defaultLayout: "main",
+    secondaryLayout: "home"
   })
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.log(err));
+);
+app.set("view engine", "handlebars");
 
-const app = express();
+//STATIC PARSER
+var dir = path.join(__dirname, "/public");
+app.use(express.static(dir));
 
-// Body Parser Middleware
-app.use(bodyParser.urlencoded({
-  extended: false
-}))
-app.use(bodyParser.json())
+app.use(methodOverride("_method"));
 
-// MEthod Override Middelware
-app.use(methodOverride('_method'));
+//BODY PARSER MIDDLEWARE
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
+app.use(bodyParser.json());
 
-// Handlebars Middleware
-app.engine('handlebars', exphbs({
-  helpers: {
-    truncate: truncate,
-    stripTags: stripTags,
-    formatDate: formatDate,
-    select: select,
-    editIcon: editIcon
-  },
-  defaultLayout: 'main'
-}));
-app.set('view engine', 'handlebars');
+app.use(expressSanitizer()); // this line follows bodyParser() instantiations
 
 app.use(cookieParser());
-app.use(session({
-  secret: 'secret',
-  resave: false,
-  saveUninitialized: false
-}));
+
+app.use(
+  require("express-session")({
+    secret: "Nellie is a baby girl",
+    resave: true,
+    saveUninitialized: true
+  })
+);
 
 // Passport Middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Set global vars
-app.use((req, res, next) => {
+//FLASH MESSAGING
+app.use(flash());
+
+// Global variables
+app.use(function(req, res, next) {
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
+  res.locals.error = req.flash("error");
   res.locals.user = req.user || null;
   next();
 });
 
-// Set static folder
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Use Routes
-app.use('/', index);
-app.use('/auth', auth);
-app.use('/stories', stories);
+app.use("/", index);
+app.use("/auth", auth);
+app.use("/stories", stories);
 
 //=====================================================================
+
+// app.listen(process.env.PORT, process.env.IP || 5000, () => {
+//   console.log("The StoryBook Server Has Started Port 5000!");
+// });
 
 app.listen(process.env.PORT, process.env.IP, () => {
   console.log("The StoryBook Server Has Started Port 5000!");
 });
-
-// app.listen(5000 || process.env.PORT, process.env.IP, () => {
-//   console.log("The StoryBook Server Has Started Port 5000!");
-// });
