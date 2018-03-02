@@ -1,5 +1,5 @@
 require("dotenv").config();
-// const express = require("express");
+const express = require("express");
 const path = require("path");
 const exphbs = require("express-handlebars");
 const methodOverride = require("method-override");
@@ -14,8 +14,8 @@ const LocalStrategy = require("passport-local");
 const app = express();
 
 // Load Models
-require("./models/User");
-require("./models/Story");
+// require("./models/User");
+// require("./models/Story");
 
 //Load Passport Module
 require("./config/passport")(passport);
