@@ -15,6 +15,10 @@ const LocalStrategy = require("passport-local");
 
 const app = express();
 
+// Load Models
+require("./models/User");
+require("./models/Story");
+
 //Load Passport Module
 // require("./config/passport")(passport);
 
@@ -39,7 +43,8 @@ const {
   stripTags,
   formatDate,
   formatDashboardDate,
-  select
+  select,
+  editIcon
 } = require("./helpers/hbs");
 
 //HANDLEBARS MIDDLEWARE
@@ -51,7 +56,8 @@ app.engine(
       stripTags: stripTags,
       formatDate: formatDate,
       formatDashboardDate: formatDashboardDate,
-      select: select
+      select: select,
+      editIcon: editIcon
     },
     defaultLayout: "main",
     secondaryLayout: "home"
