@@ -28,7 +28,7 @@ const auth = require("./routes/auth");
 const stories = require("./routes/stories");
 
 // MLAB CONFIG
-var uri = process.env.DBLOGIN;
+var uri = process.env.MONGO_URI;
 
 mongoose
   .connect(uri)
