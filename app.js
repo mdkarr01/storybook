@@ -1,5 +1,5 @@
 require("dotenv").config();
-const express = require("express");
+// const express = require("express");
 const path = require("path");
 const exphbs = require("express-handlebars");
 const methodOverride = require("method-override");
@@ -7,8 +7,6 @@ const flash = require("connect-flash");
 const bodyParser = require("body-parser");
 const expressSanitizer = require("express-sanitizer");
 const cookieParser = require("cookie-parser");
-const Story = require("./models/Story");
-const User = require("./models/User");
 const passport = require("passport");
 const mongoose = require("mongoose");
 const LocalStrategy = require("passport-local");
