@@ -20,7 +20,7 @@ require("./models/User");
 require("./models/Story");
 
 //Load Passport Module
-// require("./config/passport")(passport);
+require("./config/passport")(passport);
 
 // Load Routes
 const index = require("./routes/index");
